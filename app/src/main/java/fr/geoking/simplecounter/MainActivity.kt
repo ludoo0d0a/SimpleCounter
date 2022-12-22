@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -72,6 +73,7 @@ fun Counter() {
                 modifier = Modifier.fillMaxSize()
             ) {
                 SimpleStateButton()
+                StatefulButton();
                 ViewModelButton()
                 Text("UI Float counter ", color = Color.Black)
                 Text("${counter.value}", color = Color.Blue)
@@ -80,6 +82,7 @@ fun Counter() {
     )
 
 }
+
 
 @Composable
 fun SimpleStateButton() {
@@ -97,6 +100,35 @@ fun SimpleStateButton() {
         Text(text = "Simple Count $count")
     }
 }
+
+// https://developer.android.com/codelabs/jetpack-compose-state#0
+// https://www.youtube.com/watch?v=PMMY23F0CFg
+@Composable
+fun StatefulButton() {
+    //var count by rememberSaveable { mutableStateOf(0) }
+    var count by remember { mutableStateOf(0) }
+    Log.d("Before Button()", "Count = $count")
+    StatelessButton(count = count, onIncrement = {count++})
+}
+
+// UDF component (Unidirectional Data Flow)
+// state goes down, event goes up
+@Composable
+private fun StatelessButton(
+    count: Int,
+    onIncrement: () -> Unit,
+) {
+    Button(
+        onClick = onIncrement,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color.Gray
+        )
+    ) {
+        Text(text = "Stateless/full Count $count")
+    }
+}
+
+
 
 class MyViewModel : ViewModel() {
     var count = MutableLiveData<Int>(0)
