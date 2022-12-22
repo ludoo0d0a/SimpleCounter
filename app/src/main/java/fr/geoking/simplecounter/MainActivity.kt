@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun Counter() {
-    val counter = remember {
+    val counter = rememberSaveable {
         mutableStateOf(value = 0)
     }
 
@@ -86,7 +86,7 @@ fun Counter() {
 
 @Composable
 fun SimpleStateButton() {
-    var count by remember { mutableStateOf(0) }
+    var count by rememberSaveable { mutableStateOf(0) }
     Log.d("Before Button()", "Count = $count")
     Button(
         onClick = {
@@ -105,8 +105,7 @@ fun SimpleStateButton() {
 // https://www.youtube.com/watch?v=PMMY23F0CFg
 @Composable
 fun StatefulButton() {
-    //var count by rememberSaveable { mutableStateOf(0) }
-    var count by remember { mutableStateOf(0) }
+    var count by rememberSaveable { mutableStateOf(0) }
     Log.d("Before Button()", "Count = $count")
     StatelessButton(count = count, onIncrement = {count++})
 }
